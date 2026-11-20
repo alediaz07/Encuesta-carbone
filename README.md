@@ -1,35 +1,31 @@
-# Encuesta de cenas — Carbone × Pollos Karen
+# Encuesta Carbone × Pollos Karen
 
-Sitio **independiente**, con los logotipos oficiales y cinco preguntas aprobadas.
+Página de **una pregunta por pantalla**, sin doble desplazamiento, con logotipos oficiales. El formulario es anónimo, exclusivamente sobre cenas y no pregunta por empresa ni presupuesto.
 
-**Sitio público (GitHub Pages):** https://alediaz07.github.io/Encuesta-carbone/
+**Sitio:** https://alediaz07.github.io/Encuesta-carbone/
 
-## Diseño de una sola pantalla
+## Cómo se guardan las respuestas
 
-El sitio ya no incrusta un formulario largo ni obliga a desplazarse entre dos páginas. Cada pregunta se presenta dentro del panel derecho, con las opciones y el botón de continuar visibles en el mismo alto de pantalla. En pantallas muy pequeñas o con letra aumentada puede haber desplazamiento limitado dentro de la pregunta para mantener la accesibilidad.
+El sitio envía los datos a Google Apps Script y **solo confirma el envío cuando recibe una respuesta válida o detecta el identificador en Google Sheets**. Si no logra confirmarlo, informa del problema y ofrece el enlace del formulario alternativo. Así se evita que la página quede eternamente en «Guardando…».
 
-## Base de datos
-
-Se mantiene **Google Sheets**, en la pestaña `Respuestas`:
-
+La base de datos es únicamente Google Sheets:
 https://docs.google.com/spreadsheets/d/1zAZpOuBLgxnUkVG5J5qhe-1tXCY16xX3eHK-5p0LSOk/edit
 
-Las cinco preguntas son: tipo de cenas, proteínas, menú semanal, restricciones y sugerencias. Empresa fija: **Carbone**. Sin preguntas sobre nombre, empresa, presupuesto ni frecuencia.
+## Paso imprescindible para activar y corregir el envío
 
-## Activación del envío desde GitHub Pages — paso requerido
+Como Apps Script está en la cuenta del propietario, GitHub no puede desplegar su código automáticamente. Se debe **actualizar manualmente la implementación existente**:
 
-La nueva versión del formulario ya no utiliza el iframe antiguo. Para permitir el envío y la **confirmación real** desde GitHub Pages, es necesario añadir el receptor `doPost` a **Apps Script** y publicar una nueva versión de la misma implementación.
+1. Abrir el editor de Apps Script de Carbone.
+2. Abrir `Código.gs`. **Reemplazar todo su contenido** por [apps-script/Code.gs](apps-script/Code.gs), que incluye `doGet`, `doPost`, `saveSurvey` y la consulta segura de estado. No se debe añadir al código anterior porque duplicaría funciones.
+3. **Conservar el archivo `Index.html`** ya existente, utilizado por el formulario alternativo.
+4. Guardar.
+5. Ir a **Implementar → Administrar implementaciones → editar (ícono de lápiz) → Versión: Nueva versión → Implementar**. Mantener la misma URL `/exec` que utiliza GitHub.
+6. Abrir [GitHub Pages](https://alediaz07.github.io/Encuesta-carbone/) y probar una encuesta. Verificar el nuevo registro en `Respuestas` de Google Sheets.
 
-1. Abrir el proyecto de Google Apps Script que ya tiene `Código.gs`, `Index.html` y `saveSurvey(data)`.
-2. **Agregar** el código de [apps-script/doPost.gs](apps-script/doPost.gs) al final de `Código.gs`, o crear un nuevo archivo de secuencia de comandos llamado `Post.gs` y pegar ahí la función. No reemplazar ni duplicar `saveSurvey`.
-3. Guardar. **Implementar → Administrar implementaciones → editar (lápiz) → Versión: Nueva versión → Implementar**. Se debe actualizar la implementación existente, no generar otra dirección `/exec`.
-4. Abrir GitHub Pages, responder las cinco preguntas y enviar una prueba. Comprobar la fila en Google Sheets.
-5. Si el envío se bloquea, usar el enlace **Abrir formulario alternativo** que aparece cuando no hay confirmación.
-
-**URL actual de la implementación:** https://script.google.com/macros/s/AKfycbz9vPqxDwHYXtDtNnD1e6jmjWkkBLm3XA-esnKi3KuZmxcW-hdkSOTsBOCIpHjGKOI/exec
+**URL de Apps Script:** https://script.google.com/macros/s/AKfycbz9vPqxDwHYXtDtNnD1e6jmjWkkBLm3XA-esnKi3KuZmxcW-hdkSOTsBOCIpHjGKOI/exec
 
 ## Publicación
 
-En **Settings → Pages** seleccionar GitHub Actions. El workflow `.github/workflows/deploy-pages.yml` publica cada actualización de `main`.
+El workflow `.github/workflows/deploy-pages.yml` publica los cambios de `main` automáticamente en GitHub Pages. El proyecto no utiliza Supabase ni credenciales en el frontend.
 
-El proyecto no utiliza Supabase ni expone secretos de Google Sheets en el repositorio.
+No marcar la integración como totalmente probada hasta comprobar que una respuesta aparece en Google Sheets.
