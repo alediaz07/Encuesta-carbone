@@ -1,58 +1,97 @@
 <!doctype html>
 <html lang="es-CR">
 <head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#210b11"><meta name="description" content="Encuesta anónima de cenas exclusiva para el equipo de Carbone.">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#291019">
+<meta name="description" content="Encuesta anónima de preferencias de cenas para el equipo de Carbone, por Pollos Karen.">
 <title>Carbone × Pollos Karen | Preferencias de cenas</title>
+<link rel="icon" href="assets/pollos-karen.png" type="image/png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800;900&family=Outfit:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Outfit:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 <style>
-:root{--red:#df091e;--teal:#21a8b0;--ink:#28272c;--line:#e7e8ea}
-*{box-sizing:border-box}body{margin:0;background:#f2f0f0;font:500 15px/1.55 'DM Sans',sans-serif;color:var(--ink)}button,a{font:inherit}button{cursor:pointer}a{color:inherit}
-.app{display:grid;grid-template-columns:minmax(0,51%) minmax(0,49%);max-width:1550px;margin:auto;min-height:100svh;background:white;box-shadow:0 0 80px #1c141408}
-.hero{color:#fff;min-height:100svh;position:relative;overflow:hidden;isolation:isolate;display:flex;flex-direction:column;justify-content:space-between;padding:55px clamp(25px,4vw,66px) 0;background:radial-gradient(circle at 90% 70%,#a10819 0,transparent 50%),linear-gradient(130deg,#2d171c,#210d14 57%,#690b17)}
-.hero:before{content:"";position:absolute;inset:auto -50% -18% -45%;height:49%;background:radial-gradient(ellipse,#e60b284a,transparent 62%);z-index:-1}.hero:after{content:"";position:absolute;left:-30%;bottom:17%;width:95%;border-bottom:40px solid var(--teal);border-radius:50%;transform:rotate(13deg);opacity:.55;z-index:-1}
-.logos{display:flex;align-items:center;justify-content:center;gap:18px;min-height:90px}.logos img{object-fit:contain;filter:drop-shadow(0 5px 12px #0005)}.brand-carbone{width:min(57%,335px);max-height:95px}.brand-karen{width:min(26%,145px);max-height:145px}.cross{font:600 36px Outfit;color:#eee}
-.pills{display:flex;justify-content:center;flex-wrap:wrap;gap:13px;margin:32px 0 20px}.pill{padding:7px 13px;border-radius:25px;border:1px solid #32c5c592;background:#13545e32;font-size:11px;font-weight:800}.pill:last-child{border-color:#e14d5880;background:#870b2554}
-.hero-body{text-align:center;margin:auto}.hero h1{font:900 clamp(42px,5vw,80px)/1.04 Outfit,sans-serif;letter-spacing:-.065em;margin:12px auto 18px}.hero h1 span{color:#fc4251;display:block}.accent{width:110px;height:6px;border-radius:50%;border-top:5px solid #29c2c0;margin:0 auto 24px}.hero p{color:#fae9ed;max-width:520px;font-size:clamp(15px,1.7vw,20px);line-height:1.5;margin:0 auto 25px}
-.food{width:calc(100% + clamp(50px,8vw,132px));height:clamp(180px,28vw,350px);margin:15px calc(-1 * clamp(25px,4vw,66px)) 0;object-fit:cover;object-position:center 58%;mask-image:linear-gradient(to bottom,transparent,#000 19%)}
-.content{padding:clamp(28px,4vw,68px) clamp(22px,3vw,53px);display:flex;flex-direction:column;min-width:0}.eyebrow{font-size:12px;font-weight:800;letter-spacing:.1em;text-transform:uppercase}.eyebrow b{color:var(--red);font-size:22px;margin-right:8px}.content h2{font:900 clamp(31px,3.3vw,48px)/1.11 Outfit,sans-serif;letter-spacing:-.05em;margin:16px 0 25px}.content h2 em{font-style:normal;color:var(--red)}.notice{border:1px solid #fab1b5;background:#fff0f1;color:#c7202e;border-radius:13px;font-size:13px;font-weight:750;padding:12px 16px;margin-bottom:28px}
-.progress{display:flex;justify-content:space-between;font-size:13px;font-weight:800;gap:15px}.progress small{color:#888;font-weight:500}.bar{height:7px;border-radius:9px;background:#e7e7e7;margin:12px 0 24px;overflow:hidden}.bar span{display:block;width:20%;height:100%;background:linear-gradient(90deg,#d30a1f,#f01a2e);border-radius:9px}
-.questions{display:grid;gap:10px;list-style:none;padding:0;margin:0 0 32px}.question{padding:12px;display:grid;grid-template-columns:51px minmax(0,1fr) 20px;align-items:center;gap:13px;border:1px solid var(--line);border-radius:15px;background:#fff;box-shadow:0 4px 9px #1717170a}.symbol{display:grid;place-items:center;width:48px;height:48px;background:#ffeff0;color:var(--red);border-radius:12px;font-size:24px}.question strong{display:block;font:800 17px Outfit,sans-serif;letter-spacing:-.015em}.question small{display:block;color:#61616b;font-size:12px;line-height:1.4}.arrow{font-size:26px;color:var(--red);font-weight:800}
-.start{width:100%;margin-top:auto;min-height:65px;border:0;border-radius:14px;color:white;font:800 20px Outfit,sans-serif;background:linear-gradient(180deg,#ed0d22,#a60013);box-shadow:0 13px 25px #c20c2638;transition:transform .2s,filter .2s}.start:hover{transform:translateY(-2px);filter:brightness(1.07)}.foot{font-size:11px;color:#888;text-align:center;margin-top:18px}
-.hidden{display:none!important}.form-links{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:14px}.back{border:0;border-radius:9px;padding:12px 15px;background:#f1f2f3;font-weight:800}.direct{font-size:13px;color:#ad1125;font-weight:750;text-decoration:underline}.frame{border:1px solid var(--line);border-radius:14px;overflow:hidden;box-shadow:0 3px 16px #10101012}.frame iframe{width:100%;height:960px;display:block;border:0;background:#fff}.subnote{font-size:12px;color:#777}
-@media(max-width:1000px){.app{grid-template-columns:43% 57%}.hero{padding:25px 22px 0}.content{padding:35px 24px}.hero h1{font-size:clamp(32px,5vw,58px)}.hero p{font-size:14px}.food{width:calc(100% + 44px);margin-left:-22px;margin-right:-22px;height:270px}}
-@media(max-width:760px){.app{display:block}.hero{min-height:0;padding:20px 20px 0}.logos{min-height:68px;gap:12px}.brand-karen{width:23%;max-height:90px}.brand-carbone{width:58%;max-height:70px}.cross{font-size:24px}.pills{margin:18px 0}.hero h1{font-size:clamp(38px,9vw,58px)}.hero-body{padding:18px 0 5px}.food{height:145px;margin:0 -20px;width:calc(100% + 40px)}.content{padding:32px 18px 40px}.content h2{font-size:37px}.frame iframe{height:1020px}}
-@media(max-width:390px){.question{grid-template-columns:43px minmax(0,1fr) 15px;padding:10px}.symbol{width:41px;height:41px;font-size:20px}.question strong{font-size:14px}.question small{font-size:11px}}
-@media(prefers-reduced-motion:reduce){*,*:before,*:after{transition:none!important;scroll-behavior:auto!important}}
+:root{--red:#de0822;--red2:#f03247;--teal:#2fbac2;--dark:#251118;--ink:#28272c;--muted:#71727c;--line:#e7e7e9;--paper:#fff;--soft:#fbf9fa}
+*,*:before,*:after{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;height:100dvh;overflow:hidden}body{font:500 14px/1.4 'DM Sans',sans-serif;color:var(--ink);background:#eee9eb;-webkit-font-smoothing:antialiased}button,input,textarea{font:inherit}button{cursor:pointer}button:focus-visible,input:focus-visible,textarea:focus-visible,a:focus-visible{outline:3px solid var(--teal);outline-offset:3px}
+.shell{display:grid;grid-template-columns:minmax(0,42%) minmax(0,58%);height:100vh;height:100dvh;max-width:1640px;margin:auto;background:var(--paper);overflow:hidden;box-shadow:0 0 35px #1f12121a}
+.brand-panel{height:100%;min-height:0;position:relative;isolation:isolate;overflow:hidden;display:flex;flex-direction:column;justify-content:space-between;padding:clamp(19px,3.2vw,52px) clamp(18px,3vw,48px) 0;color:#fff;background:radial-gradient(ellipse at 85% 67%,#891021 0,transparent 57%),linear-gradient(160deg,#321b22,#1c0e16 58%,#5b101a)}
+.brand-panel:before{content:"";position:absolute;inset:auto -35% -8% -25%;height:48%;background:radial-gradient(ellipse,#e6002b45,transparent 65%);z-index:-1}.brand-panel:after{content:"";position:absolute;left:-15%;right:20%;bottom:16%;border-bottom:18px solid #29b7c0;border-radius:80%;transform:rotate(-13deg);opacity:.45;z-index:-1}
+.logos{display:flex;align-items:center;justify-content:center;gap:clamp(8px,1.2vw,20px);height:clamp(48px,9vh,99px);flex:0 0 auto}.logos img{object-fit:contain;max-height:100%;min-width:0;filter:drop-shadow(0 5px 8px #0004)}.carbone{width:60%}.pk{width:25%}.times{font:800 clamp(19px,3vw,32px) Outfit,sans-serif;color:#f8e1e2}.audience{display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:9px;margin-top:14px}.audience span{font-size:clamp(9px,1vw,12px);padding:6px 12px;border-radius:25px;border:1px solid #52c7c37a;background:#1c717339;font-weight:800;text-align:center}.audience span:last-child{border-color:#e53b547d;background:#ae19283c}
+.hero-copy{text-align:center;margin:auto;max-width:430px;padding:10px 0}.hero-copy h1{font:900 clamp(31px,4.1vw,65px)/1.04 Outfit,sans-serif;letter-spacing:-.065em;margin:0 0 13px}.hero-copy h1 em{font-style:normal;color:#ff374a;display:block}.swoosh{width:83px;height:6px;border-top:4px solid var(--teal);border-radius:50%;margin:12px auto}.hero-copy p{font-size:clamp(11px,1.3vw,16px);line-height:1.55;color:#e6dbdf;max-width:360px;margin:12px auto 0}.brand-panel .photo{display:block;width:calc(100% + clamp(36px,6vw,96px));margin:0 calc(-1 * clamp(18px,3vw,48px));height:clamp(72px,23vh,240px);object-fit:cover;object-position:center 50%;mask-image:linear-gradient(to bottom,transparent,#000 18%);flex-shrink:1}
+.survey{height:100%;min-height:0;display:flex;flex-direction:column;padding:clamp(14px,3vh,35px) clamp(18px,3.2vw,49px) clamp(12px,2.3vh,28px);overflow:hidden;position:relative}
+.survey-top{display:flex;justify-content:space-between;align-items:center;gap:8px;min-height:35px}.kicker{font-size:clamp(10px,1vw,12px);letter-spacing:.065em;font-weight:900;text-transform:uppercase}.kicker span{color:var(--red)}.anon{white-space:nowrap;color:#888;font-size:11px;font-weight:700}.survey-title{font:900 clamp(20px,2.6vw,38px)/1.06 Outfit,sans-serif;letter-spacing:-.045em;margin:6px 0 5px}.survey-title em{color:var(--red);font-style:normal}.note{margin:4px 0 10px;padding:7px 10px;border-radius:9px;color:#ad1a2e;background:#fff2f3;font-size:11px;font-weight:750;border:1px solid #f6ced1}
+.meter{display:flex;justify-content:space-between;align-items:center;font-size:11px;font-weight:850;color:#52525b}.meter strong{color:var(--red)}.track{width:100%;height:5px;border-radius:10px;background:#e9e9eb;overflow:hidden;margin:8px 0 clamp(10px,2vh,22px)}.fill{height:100%;width:20%;background:linear-gradient(90deg,#cb071d,#f03048);border-radius:10px;transition:width .24s ease}
+#stage{flex:1;min-height:0;overflow-y:auto;overscroll-behavior:contain;scrollbar-width:thin;padding:2px 2px 4px;animation:stepin .24s ease}#stage::-webkit-scrollbar{width:4px}#stage::-webkit-scrollbar-thumb{background:#d7d1d5;border-radius:5px}@keyframes stepin{from{opacity:.3;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+.step{font-size:10px;letter-spacing:.1em;font-weight:900;color:var(--red);text-transform:uppercase;margin-bottom:8px}.question{font:850 clamp(21px,2.25vw,32px)/1.1 Outfit,sans-serif;letter-spacing:-.035em;margin:0 0 8px}.description{color:#777780;font-size:12px;line-height:1.45;margin:0 0 clamp(10px,2vh,23px)}.options{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:clamp(7px,1.2vh,12px)}.option{min-height:clamp(47px,7.3vh,73px);border:1.5px solid var(--line);background:white;display:flex;justify-content:space-between;align-items:center;text-align:left;gap:8px;border-radius:12px;padding:9px 11px;color:#313039;font-size:clamp(11px,1.08vw,14px);font-weight:800;line-height:1.27;transition:.18s}.option:hover{background:#fff8f8;border-color:#f7b8bf}.option[aria-pressed="true"]{background:#fff1f3;border-color:var(--red);box-shadow:inset 0 0 0 .5px var(--red)}.tick{display:grid;place-items:center;width:19px;height:19px;border:1.5px solid #d2d1d5;border-radius:5px;flex-shrink:0;color:transparent;font-size:11px}.option[aria-pressed="true"] .tick{color:#fff;background:var(--red);border-color:var(--red)}.radio .tick{border-radius:50%}.label{display:block;margin:13px 0 6px;font-size:11px;font-weight:800}.field,textarea{width:100%;border:1.5px solid var(--line);border-radius:11px;outline:0;padding:11px 12px;background:white;color:var(--ink)}.field:focus,textarea:focus{border-color:var(--red)}textarea{display:block;min-height:110px;max-height:30vh;resize:none}.chars{font-size:11px;color:#888;text-align:right;margin-top:5px}
+.controls{display:flex;justify-content:space-between;align-items:center;gap:11px;border-top:1px solid #eee;padding-top:clamp(8px,1.8vh,18px);margin-top:10px;flex-shrink:0}.btn{border:0;border-radius:11px;font-weight:900;min-height:clamp(40px,7vh,56px);padding:0 17px}.back{color:#5f6067;background:#f0f0f1}.next{color:white;background:linear-gradient(180deg,#e70c28,#b9071d);min-width:154px;box-shadow:0 9px 18px #d80b2533}.next:hover{filter:brightness(1.06)}.next:disabled{opacity:.55;cursor:wait}.privacy{text-align:right;color:#999;font-size:10px;line-height:1.25;margin-top:6px}
+.error{background:#fff1f2;border:1px solid #f5cbd0;color:#aa1529;font-weight:800;border-radius:9px;padding:8px 10px;margin-top:8px;font-size:11px}.hide{display:none!important}.success{height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:10px}.check{display:grid;place-items:center;width:76px;height:76px;border-radius:24px;background:#e5faec;color:#11874b;font-size:40px}.success h2{font:900 34px/1.1 Outfit,sans-serif;margin:9px 0}.success p{max-width:330px;color:#6f6f77;line-height:1.6}.direct{color:#b9071d;text-decoration:underline;font-size:11px;font-weight:800}.hp{position:absolute;left:-10000px;opacity:0;pointer-events:none}
+@media(max-width:900px){.shell{grid-template-columns:37% 63%}.brand-panel{padding:17px 14px 0}.brand-panel .photo{width:calc(100% + 28px);margin:0 -14px}.audience{gap:5px}.audience span{font-size:9px;padding:4px 7px}.hero-copy h1{font-size:clamp(29px,4vw,42px)}.hero-copy p{font-size:12px}.survey{padding:12px 19px 12px}.survey-title{font-size:24px}.question{font-size:22px}.option{font-size:11px}}
+@media(max-height:630px) and (min-width:651px){.brand-panel .photo{height:18vh}.logos{height:clamp(52px,15vh,78px)}.hero-copy p{font-size:12px}.hero-copy h1{font-size:clamp(30px,4.0vw,49px)}.audience{margin-top:5px}.survey-title{font-size:24px}.note{margin:3px 0 7px;padding:5px 9px}.track{margin:6px 0 11px}.options{gap:7px}.option{min-height:47px}.description{margin-bottom:8px}.question{margin-bottom:5px}.step{margin-bottom:4px}.controls{margin-top:7px;padding-top:7px}.btn{min-height:39px}.privacy{margin-top:4px}}
+@media(max-width:650px){.shell{grid-template-columns:1fr;grid-template-rows:auto minmax(0,1fr)}.brand-panel{height:auto;min-height:0;padding:8px 14px;background:linear-gradient(95deg,#27111a,#560c1a)}.logos{height:44px;justify-content:center}.carbone{width:auto;max-width:190px;height:40px}.pk{width:auto;height:42px}.times{font-size:20px}.audience,.hero-copy,.brand-panel .photo{display:none}.survey{padding:12px 17px 12px}.survey-title{font-size:28px}.note{margin-bottom:10px}.question{font-size:25px}.options{gap:9px}.option{font-size:12px;min-height:62px}.controls{margin-top:9px}.privacy{font-size:10px}}
+@media(max-width:390px){.options{grid-template-columns:1fr}.option{min-height:42px}.survey-title{font-size:24px}.question{font-size:21px}}
+@media(prefers-reduced-motion:reduce){*,*:before,*:after{transition:none!important;animation:none!important}}
 </style>
 </head>
-<body><div class="app">
-<aside class="hero"><div>
-<div class="logos"><img class="brand-carbone" src="assets/carbone.png" alt="Carbone"><span class="cross" aria-hidden="true">×</span><img class="brand-karen" src="assets/pollos-karen.png" alt="Pollos Karen"></div>
-<div class="pills"><span class="pill">▣ &nbsp;Para el equipo de Carbone</span><span class="pill">♨ &nbsp; Pollos Karen · Cenas</span></div>
-<div class="hero-body"><h1>Tu gusto.<span>Nuestro próximo menú.</span></h1><div class="accent"></div><p>Esta encuesta es para Carbone y nos ayudará a crear un menú de cenas pensado especialmente para su equipo.</p></div>
-</div><img class="food" src="assets/cena-carbone.webp" alt="Cena completa preparada con pollo y acompañamientos" loading="lazy"></aside>
-<main class="content" id="contenido">
-<div class="eyebrow"><b>♨</b> ENCUESTA CARBONE × POLLOS KAREN</div><h2>Preferencias de <em>Cenas</em></h2>
-<div class="notice">ⓘ &nbsp;Esta encuesta es sobre tus preferencias de cena únicamente.</div>
-<section id="intro">
-<div class="progress"><span>5 preguntas sobre tus gustos</span><small>1–2 minutos · Anónima</small></div><div class="bar" aria-hidden="true"><span></span></div>
-<ol class="questions">
-<li class="question"><span class="symbol">♨</span><div><strong>1. Tipos de cena</strong><small>Casados, comida rápida, ensaladas y opciones vegetarianas.</small></div><span class="arrow">›</span></li>
-<li class="question"><span class="symbol">🍗</span><div><strong>2. Proteínas favoritas</strong><small>Elegí las proteínas que más disfrutás.</small></div><span class="arrow">›</span></li>
-<li class="question"><span class="symbol">▦</span><div><strong>3. Menú semanal</strong><small>Contanos qué estilo y variedad de menú preferís.</small></div><span class="arrow">›</span></li>
-<li class="question"><span class="symbol">☘</span><div><strong>4. Restricciones alimentarias</strong><small>Indicá si tenés alguna preferencia o restricción.</small></div><span class="arrow">›</span></li>
-<li class="question"><span class="symbol">☏</span><div><strong>5. Comentarios adicionales</strong><small>Qué comidas agregarías o preferís evitar.</small></div><span class="arrow">›</span></li>
-</ol><button class="start" id="start" type="button">Comenzar encuesta &nbsp; →</button>
-<p class="foot">Participación voluntaria · No solicitamos datos personales</p></section>
-<section class="hidden" id="formView" aria-label="Encuesta en Google Apps Script"><div class="form-links"><button class="back" id="back" type="button">← Volver</button><a id="direct" class="direct" href="https://script.google.com/macros/s/AKfycbz9vPqxDwHYXtDtNnD1e6jmjWkkBLm3XA-esnKi3KuZmxcW-hdkSOTsBOCIpHjGKOI/exec" target="_blank" rel="noopener noreferrer">Abrir formulario directamente</a></div>
-<div class="frame"><iframe id="surveyFrame" title="Encuesta de preferencias de cenas de Carbone" referrerpolicy="strict-origin-when-cross-origin"></iframe></div>
-<p class="subnote">Las respuestas se registran mediante Google Apps Script en Google Sheets. Si el formulario no carga en esta ventana, usá «Abrir formulario directamente».</p></section>
-</main></div>
+<body>
+<div class="shell">
+<aside class="brand-panel" aria-label="Carbone y Pollos Karen">
+  <div>
+    <div class="logos"><img src="assets/carbone.png" class="carbone" alt="Carbone"><span class="times" aria-hidden="true">×</span><img src="assets/pollos-karen.png" class="pk" alt="Pollos Karen"></div>
+    <div class="audience"><span>Para el equipo de Carbone</span><span>Pollos Karen · Cenas</span></div>
+  </div>
+  <div class="hero-copy"><h1>Tu gusto.<em>Nuestro próximo menú.</em></h1><div class="swoosh"></div><p>Queremos crear un menú de cenas pensado especialmente para el equipo de Carbone.</p></div>
+  <img class="photo" src="assets/cena-carbone.webp" alt="Cena de pollo con acompañamientos">
+</aside>
+<main class="survey" aria-label="Encuesta de preferencias de cenas">
+  <header class="survey-top"><div class="kicker">ENCUESTA <span>CARBONE</span> × POLLOS KAREN</div><div class="anon">Anónima · 2 minutos</div></header>
+  <h1 class="survey-title">Preferencias de <em>cenas</em></h1>
+  <p class="note">Encuesta exclusiva para Carbone · 5 preguntas</p>
+  <div id="quiz" class="hide" aria-hidden="false"></div>
+  <div id="progressUI"><div class="meter"><span id="stepLabel">PREGUNTA 1 DE 5</span><strong id="percent">20%</strong></div><div class="track"><div class="fill" id="progressFill"></div></div></div>
+  <div id="stage" aria-live="polite"></div>
+  <div id="error" class="error hide" role="alert"></div>
+  <div id="controls" class="controls"><button class="btn back" id="back" type="button">← Atrás</button><button class="btn next" id="next" type="button">Continuar →</button></div>
+  <div id="privacy" class="privacy">No pedimos nombre, empresa, teléfono ni correo.</div>
+  <div id="success" class="success hide" role="status"><div class="check">✓</div><h2>¡Muchas gracias!</h2><p>Recibimos tus respuestas. Nos ayudarán a preparar un menú de cenas a tu gusto para Carbone.</p></div>
+  <p id="fallback" class="privacy hide"><a class="direct" target="_blank" rel="noopener" href="https://script.google.com/macros/s/AKfycbz9vPqxDwHYXtDtNnD1e6jmjWkkBLm3XA-esnKi3KuZmxcW-hdkSOTsBOCIpHjGKOI/exec">Abrir formulario alternativo</a></p>
+</main>
+</div>
+<input class="hp" id="company_website" aria-hidden="true" tabindex="-1" autocomplete="off">
+<iframe name="receiver" id="receiver" title="Confirmación del envío" style="position:absolute;width:0;height:0;border:0;opacity:0;pointer-events:none" tabindex="-1"></iframe>
 <script>
-const URL='https://script.google.com/macros/s/AKfycbz9vPqxDwHYXtDtNnD1e6jmjWkkBLm3XA-esnKi3KuZmxcW-hdkSOTsBOCIpHjGKOI/exec';
-const intro=document.getElementById('intro'),form=document.getElementById('formView'),frame=document.getElementById('surveyFrame');
-document.getElementById('start').addEventListener('click',()=>{intro.classList.add('hidden');form.classList.remove('hidden');if(!frame.src)frame.src=URL;document.getElementById('contenido').scrollIntoView({behavior:'smooth'});});
-document.getElementById('back').addEventListener('click',()=>{form.classList.add('hidden');intro.classList.remove('hidden');document.getElementById('contenido').scrollIntoView({behavior:'smooth'});});
-</script></body></html>
+'use strict';
+const ENDPOINT='https://script.google.com/macros/s/AKfycbz9vPqxDwHYXtDtNnD1e6jmjWkkBLm3XA-esnKi3KuZmxcW-hdkSOTsBOCIpHjGKOI/exec';
+const Q=[
+  {key:'cenas',title:'¿Qué tipos de cenas te gustaría encontrar en nuestro menú?',hint:'Podés marcar varias opciones.',options:['Casados tradicionales','Hamburguesas y comida rápida','Ensaladas completas','Opciones vegetarianas']},
+  {key:'proteinas',title:'¿Cuáles son tus proteínas favoritas?',hint:'Elegí todas las que disfrutás.',options:['Pollo','Carne de res','Cerdo','Pescado','Huevo','Legumbres u opciones vegetarianas']},
+  {key:'menu',title:'¿Qué tipo de menú te gustaría recibir durante la semana?',hint:'Seleccioná una sola opción.',options:['Un plato diferente todos los días','Comida casera tradicional','Opciones ligeras y saludables','Combinación de comida casera y rápida','Repetir los platos que más me gustan'],single:true},
+  {key:'restricciones',title:'¿Tenés alguna restricción o preferencia alimentaria?',hint:'Si no tenés ninguna, seleccioná «Ninguna».',options:['Ninguna','Vegetariana','Sin lácteos','Sin gluten','Baja en grasa','Otra']},
+  {key:'comentario',title:'¿Qué comidas te gustaría que agregáramos al menú y cuáles preferís evitar?',hint:'Esta respuesta es opcional; escribí lo que te gustaría contarnos.'}
+];
+const data={cenas:[],proteinas:[],menu:'',restricciones:[],otraRestriccion:'',comentario:''};
+let step=0,sending=false,waitingTimer=null;
+const stage=document.getElementById('stage'),next=document.getElementById('next'),back=document.getElementById('back'),err=document.getElementById('error');
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+function id(){let s='';if(window.crypto&&crypto.getRandomValues){const a=new Uint8Array(20);crypto.getRandomValues(a);s=Array.from(a,x=>x.toString(16).padStart(2,'0')).join('')}else s=Date.now().toString(36)+Math.random().toString(36).slice(2).padEnd(16,'a');return s}
+const submissionId=id();
+function showError(msg){err.textContent=msg;err.classList.remove('hide')}
+function clearError(){err.classList.add('hide');err.textContent=''}
+function render(){let q=Q[step];document.getElementById('stepLabel').textContent='PREGUNTA '+(step+1)+' DE 5';let pct=Math.round((step+1)/5*100);document.getElementById('percent').textContent=pct+'%';document.getElementById('progressFill').style.width=pct+'%';back.style.visibility=step===0?'hidden':'visible';next.textContent=step===4?'Enviar respuestas ✓':'Continuar →';next.disabled=false;clearError();let s='<div class="step">Pregunta '+String(step+1).padStart(2,'0')+'</div><h2 class="question">'+esc(q.title)+'</h2><p class="description">'+esc(q.hint)+'</p>';
+ if(q.options){s+='<div class="options'+(q.single?' radio':'')+'" role="group" aria-label="'+esc(q.title)+'">'+q.options.map(o=>{let selected=q.single?data[q.key]===o:data[q.key].includes(o);return '<button type="button" class="option" aria-pressed="'+selected+'" data-key="'+q.key+'" data-option="'+esc(o)+'"><span>'+esc(o)+'</span><span class="tick">✓</span></button>'}).join('')+'</div>';
+   if(q.key==='restricciones'&&data.restricciones.includes('Otra'))s+='<label class="label" for="other">Especificá tu restricción o preferencia</label><input class="field" id="other" maxlength="150" type="text" placeholder="Escribí aquí..." value="'+esc(data.otraRestriccion)+'">';
+ }else{s+='<label class="label" for="comment">Tu sugerencia (opcional)</label><textarea id="comment" maxlength="450" placeholder="Ejemplo: me gustaría encontrar más opciones con pollo, pastas o sopas...">'+esc(data.comentario)+'</textarea><div class="chars" id="chars">'+data.comentario.length+' / 450</div>'}
+ stage.innerHTML=s;stage.scrollTop=0;stage.style.animation='none';void stage.offsetWidth;stage.style.animation='stepin .24s ease';
+ stage.querySelectorAll('.option').forEach(btn=>btn.addEventListener('click',()=>toggle(btn.dataset.key,btn.dataset.option)));
+ let other=document.getElementById('other');if(other)other.addEventListener('input',e=>data.otraRestriccion=e.target.value);
+ let comment=document.getElementById('comment');if(comment)comment.addEventListener('input',e=>{data.comentario=e.target.value;document.getElementById('chars').textContent=data.comentario.length+' / 450'})
+}
+function toggle(key,opt){if(key==='menu'){data.menu=opt}else if(key==='restricciones'){if(opt==='Ninguna'){data.restricciones=['Ninguna'];data.otraRestriccion=''}else{let a=data.restricciones.filter(x=>x!=='Ninguna');data.restricciones=a.includes(opt)?a.filter(x=>x!==opt):[...a,opt];if(!data.restricciones.includes('Otra'))data.otraRestriccion=''}}else{let a=data[key];data[key]=a.includes(opt)?a.filter(x=>x!==opt):[...a,opt]}render()}
+function validate(){if(step===0&&!data.cenas.length)return'Seleccioná al menos un tipo de cena.';if(step===1&&!data.proteinas.length)return'Seleccioná al menos una proteína.';if(step===2&&!data.menu)return'Elegí una opción de menú semanal.';if(step===3){if(!data.restricciones.length)return'Seleccioná una opción de preferencias alimentarias.';if(data.restricciones.includes('Otra')&&!data.otraRestriccion.trim())return'Especificá la restricción que seleccionaste.'}return''}
+back.addEventListener('click',()=>{if(!sending&&step>0){step--;render()}});
+next.addEventListener('click',()=>{if(sending)return;let bad=validate();if(bad){showError(bad);return}if(step<4){step++;render()}else send()});
+function fail(msg){clearTimeout(waitingTimer);sending=false;back.disabled=false;next.disabled=false;next.textContent='Reintentar envío →';showError(msg);document.getElementById('fallback').classList.remove('hide')}
+function done(){clearTimeout(waitingTimer);sending=false;document.getElementById('progressUI').classList.add('hide');document.getElementById('stage').classList.add('hide');document.getElementById('controls').classList.add('hide');document.getElementById('privacy').classList.add('hide');document.getElementById('fallback').classList.add('hide');clearError();document.getElementById('success').classList.remove('hide')}
+window.addEventListener('message',event=>{const origin=event.origin;if(!(origin==='https://script.google.com'||origin.endsWith('.googleusercontent.com')||origin.endsWith('.google.com')))return;const msg=event.data;if(!msg||msg.kind!=='CARBONE_SURVEY_RESULT'||msg.submissionId!==submissionId||!sending)return;if(msg.ok===true)done();else fail(msg.error||'Google no pudo guardar la respuesta.')});
+function send(){sending=true;next.disabled=true;back.disabled=true;next.textContent='Guardando…';clearError();const payload={...data,submissionId,company_website:document.getElementById('company_website').value};const form=document.createElement('form');form.method='POST';form.action=ENDPOINT;form.target='receiver';form.acceptCharset='UTF-8';form.style.display='none';const input=document.createElement('input');input.type='hidden';input.name='payload';input.value=JSON.stringify(payload);form.appendChild(input);document.body.appendChild(form);form.submit();form.remove();waitingTimer=setTimeout(()=>fail('No pudimos confirmar que Google guardó la respuesta. Verificá tu conexión o abrí el formulario alternativo.'),30000)}
+render();
+</script>
+</body></html>
