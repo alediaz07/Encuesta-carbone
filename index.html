@@ -69,7 +69,7 @@ const Q=[
   {key:'comentario',title:'¿Qué comidas te gustaría que agregáramos al menú y cuáles preferís evitar?',hint:'Esta respuesta es opcional; escribí lo que te gustaría contarnos.'}
 ];
 const data={cenas:[],proteinas:[],menu:'',restricciones:[],otraRestriccion:'',comentario:''};
-let step=0,sending=false,waitingTimer=null;
+let step=0,sending=false,waitingTimer=null,statusTimer=null,statusTimeout=null,statusScript=null,statusCallback=null,pollSeq=0,noticeTimer=null;
 const stage=document.getElementById('stage'),next=document.getElementById('next'),back=document.getElementById('back'),err=document.getElementById('error');
 const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 function id(){let s='';if(window.crypto&&crypto.getRandomValues){const a=new Uint8Array(20);crypto.getRandomValues(a);s=Array.from(a,x=>x.toString(16).padStart(2,'0')).join('')}else s=Date.now().toString(36)+Math.random().toString(36).slice(2).padEnd(16,'a');return s}
@@ -89,10 +89,80 @@ function toggle(key,opt){if(key==='menu'){data.menu=opt}else if(key==='restricci
 function validate(){if(step===0&&!data.cenas.length)return'Seleccioná al menos un tipo de cena.';if(step===1&&!data.proteinas.length)return'Seleccioná al menos una proteína.';if(step===2&&!data.menu)return'Elegí una opción de menú semanal.';if(step===3){if(!data.restricciones.length)return'Seleccioná una opción de preferencias alimentarias.';if(data.restricciones.includes('Otra')&&!data.otraRestriccion.trim())return'Especificá la restricción que seleccionaste.'}return''}
 back.addEventListener('click',()=>{if(!sending&&step>0){step--;render()}});
 next.addEventListener('click',()=>{if(sending)return;let bad=validate();if(bad){showError(bad);return}if(step<4){step++;render()}else send()});
-function fail(msg){clearTimeout(waitingTimer);sending=false;back.disabled=false;next.disabled=false;next.textContent='Reintentar envío →';showError(msg);document.getElementById('fallback').classList.remove('hide')}
-function done(){clearTimeout(waitingTimer);sending=false;document.getElementById('progressUI').classList.add('hide');document.getElementById('stage').classList.add('hide');document.getElementById('controls').classList.add('hide');document.getElementById('privacy').classList.add('hide');document.getElementById('fallback').classList.add('hide');clearError();document.getElementById('success').classList.remove('hide')}
-window.addEventListener('message',event=>{const origin=event.origin;if(!(origin==='https://script.google.com'||origin.endsWith('.googleusercontent.com')||origin.endsWith('.google.com')))return;const msg=event.data;if(!msg||msg.kind!=='CARBONE_SURVEY_RESULT'||msg.submissionId!==submissionId||!sending)return;if(msg.ok===true)done();else fail(msg.error||'Google no pudo guardar la respuesta.')});
-function send(){sending=true;next.disabled=true;back.disabled=true;next.textContent='Guardando…';clearError();const payload={...data,submissionId,company_website:document.getElementById('company_website').value};const form=document.createElement('form');form.method='POST';form.action=ENDPOINT;form.target='receiver';form.acceptCharset='UTF-8';form.style.display='none';const input=document.createElement('input');input.type='hidden';input.name='payload';input.value=JSON.stringify(payload);form.appendChild(input);document.body.appendChild(form);form.submit();form.remove();waitingTimer=setTimeout(()=>fail('No pudimos confirmar que Google guardó la respuesta. Verificá tu conexión o abrí el formulario alternativo.'),30000)}
+function clearPolling(){
+  clearTimeout(waitingTimer);clearTimeout(statusTimer);clearTimeout(statusTimeout);clearTimeout(noticeTimer);
+  if(statusScript){statusScript.remove();statusScript=null;}
+  if(statusCallback){try{delete window[statusCallback]}catch(e){window[statusCallback]=undefined}statusCallback=null;}
+}
+function fail(msg){
+  clearPolling();sending=false;back.disabled=false;next.disabled=false;
+  next.textContent='Reintentar envío →';
+  showError(msg);
+  document.getElementById('fallback').classList.remove('hide');
+}
+function done(){
+  clearPolling();sending=false;
+  document.getElementById('progressUI').classList.add('hide');
+  document.getElementById('stage').classList.add('hide');
+  document.getElementById('controls').classList.add('hide');
+  document.getElementById('privacy').classList.add('hide');
+  document.getElementById('fallback').classList.add('hide');
+  clearError();document.getElementById('success').classList.remove('hide');
+}
+window.addEventListener('message',event=>{
+  if(!['https://script.google.com'].includes(event.origin)&&!event.origin.endsWith('.googleusercontent.com')&&!event.origin.endsWith('.google.com'))return;
+  const msg=event.data;
+  if(!msg||msg.kind!=='CARBONE_SURVEY_RESULT'||msg.submissionId!==submissionId||!sending)return;
+  if(msg.ok===true)done();else fail(msg.error||'Google no pudo guardar la respuesta.');
+});
+function scheduleStatus(){
+  if(sending)statusTimer=setTimeout(checkStatus,1800);
+}
+function checkStatus(){
+  if(!sending)return;
+  const callback='__carboneStatus_'+(++pollSeq);
+  const script=document.createElement('script');
+  statusScript=script;statusCallback=callback;
+  let resolved=false;
+  function clean(){
+    clearTimeout(statusTimeout);script.remove();
+    if(window[callback]){try{delete window[callback]}catch(e){window[callback]=undefined}}
+    if(statusScript===script)statusScript=null;
+    if(statusCallback===callback)statusCallback=null;
+  }
+  function nextPoll(){if(resolved)return;resolved=true;clean();scheduleStatus()}
+  window[callback]=function(result){
+    if(resolved)return;
+    resolved=true;clean();
+    if(!sending)return;
+    if(result&&result.submissionId===submissionId&&result.found===true)done();
+    else scheduleStatus();
+  };
+  script.onerror=nextPoll;
+  statusTimeout=setTimeout(nextPoll,6000);
+  script.src=ENDPOINT+'?api=status&id='+encodeURIComponent(submissionId)+'&callback='+encodeURIComponent(callback)+'&_='+Date.now();
+  document.head.appendChild(script);
+}
+function send(){
+  sending=true;next.disabled=true;back.disabled=true;
+  next.textContent='Guardando…';clearError();
+  document.getElementById('fallback').classList.add('hide');
+  const payload={...data,submissionId,company_website:document.getElementById('company_website').value};
+  try{
+    const form=document.createElement('form');
+    form.method='POST';form.action=ENDPOINT;form.target='receiver';
+    form.acceptCharset='UTF-8';form.style.display='none';
+    const input=document.createElement('input');
+    input.type='hidden';input.name='payload';input.value=JSON.stringify(payload);
+    form.appendChild(input);document.body.appendChild(form);form.submit();form.remove();
+  }catch(e){fail('No se pudo iniciar el envío. Intentá nuevamente.');return;}
+  scheduleStatus();
+  noticeTimer=setTimeout(()=>{
+    if(sending){next.textContent='Verificando respuesta…';
+      document.getElementById('fallback').classList.remove('hide');}
+  },8500);
+  waitingTimer=setTimeout(()=>fail('No encontramos una confirmación de Google Sheets. Puede faltar publicar una nueva versión de Apps Script. Si ya se guardó, no hace falta enviarla otra vez. Revisá con el administrador o abrí el formulario alternativo.'),25000);
+}
 render();
 </script>
 </body></html>
