@@ -24,3 +24,6 @@ En GitHub, abrir **Settings → Pages** y en **Build and deployment → Source**
 
 ## Verificación pendiente
 Probar el enlace de GitHub Pages en un navegador, enviar una respuesta de prueba y comprobar que aparece en **Respuestas** de Google Sheets. El repositorio por sí solo no demuestra que la implementación de Apps Script y permisos de Google estén correctos.
+
+## Estado del despliegue
+El origen de GitHub Pages debe ser **GitHub Actions**. Cualquier cambio en `main` inicia el workflow de publicación. Antes de compartir el enlace de la encuesta, enviar una respuesta de prueba y comprobar su registro en Google Sheets.
