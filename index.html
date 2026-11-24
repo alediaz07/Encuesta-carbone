@@ -45,9 +45,9 @@
 <main class="survey" aria-label="Encuesta de preferencias de cenas">
   <header class="survey-top"><div class="kicker">ENCUESTA <span>CARBONE</span> × POLLOS KAREN</div><div class="anon">Anónima · 2 minutos</div></header>
   <h1 class="survey-title">Preferencias de <em>cenas</em></h1>
-  <p class="note">Encuesta exclusiva para Carbone · 5 preguntas</p>
+  <p class="note">Encuesta exclusiva para Carbone · 4 preguntas</p>
   <div id="quiz" class="hide" aria-hidden="false"></div>
-  <div id="progressUI"><div class="meter"><span id="stepLabel">PREGUNTA 1 DE 5</span><strong id="percent">20%</strong></div><div class="track"><div class="fill" id="progressFill"></div></div></div>
+  <div id="progressUI"><div class="meter"><span id="stepLabel">PREGUNTA 1 DE 4</span><strong id="percent">20%</strong></div><div class="track"><div class="fill" id="progressFill"></div></div></div>
   <div id="stage" aria-live="polite"></div>
   <div id="error" class="error hide" role="alert"></div>
   <div id="controls" class="controls"><button class="btn back" id="back" type="button">← Atrás</button><button class="btn next" id="next" type="button">Continuar →</button></div>
@@ -62,13 +62,12 @@
 'use strict';
 const ENDPOINT='https://script.google.com/macros/s/AKfycbzT9_S8XsZF5aQdF_8dVyjmsoUZelDSkbKC7IpBkeyFY9cbuH4qGNXd9cjhUhFkazaAVg/exec';
 const Q=[
-  {key:'cenas',title:'¿Qué tipos de cenas te gustaría encontrar en nuestro menú?',hint:'Podés marcar varias opciones.',options:['Casados tradicionales','Hamburguesas y comida rápida','Ensaladas completas','Opciones vegetarianas']},
-  {key:'proteinas',title:'¿Cuáles son tus proteínas favoritas?',hint:'Elegí todas las que disfrutás.',options:['Pollo','Carne de res','Cerdo','Pescado','Huevo','Legumbres u opciones vegetarianas']},
+  {key:'cenas',title:'¿Qué tipos de cenas te gustaría encontrar en nuestro menú?',hint:'Podés marcar varias opciones.',options:['Casados tradicionales','Hamburguesas y comida rápida','Arroces especiales']},
+  {key:'proteinas',title:'¿Cuáles son tus proteínas favoritas?',hint:'Elegí todas las que disfrutás.',options:['Pollo','Carne de res','Cerdo','Pescado']},
   {key:'menu',title:'¿Qué tipo de menú te gustaría recibir durante la semana?',hint:'Seleccioná una sola opción.',options:['Un plato diferente todos los días','Comida casera tradicional','Opciones ligeras y saludables','Combinación de comida casera y rápida','Repetir los platos que más me gustan'],single:true},
-  {key:'restricciones',title:'¿Tenés alguna restricción o preferencia alimentaria?',hint:'Si no tenés ninguna, seleccioná «Ninguna».',options:['Ninguna','Vegetariana','Sin lácteos','Sin gluten','Baja en grasa','Otra']},
   {key:'comentario',title:'¿Qué comidas te gustaría que agregáramos al menú y cuáles preferís evitar?',hint:'Esta respuesta es opcional; escribí lo que te gustaría contarnos.'}
 ];
-const data={cenas:[],proteinas:[],menu:'',restricciones:[],otraRestriccion:'',comentario:''};
+const data={cenas:[],proteinas:[],menu:'',comentario:''};
 let step=0,sending=false,waitingTimer=null,statusTimer=null,statusTimeout=null,statusScript=null,statusCallback=null,pollSeq=0,noticeTimer=null;
 const stage=document.getElementById('stage'),next=document.getElementById('next'),back=document.getElementById('back'),err=document.getElementById('error');
 const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -76,19 +75,19 @@ function id(){let s='';if(window.crypto&&crypto.getRandomValues){const a=new Uin
 const submissionId=id();
 function showError(msg){err.textContent=msg;err.classList.remove('hide')}
 function clearError(){err.classList.add('hide');err.textContent=''}
-function render(){let q=Q[step];document.getElementById('stepLabel').textContent='PREGUNTA '+(step+1)+' DE 5';let pct=Math.round((step+1)/5*100);document.getElementById('percent').textContent=pct+'%';document.getElementById('progressFill').style.width=pct+'%';back.style.visibility=step===0?'hidden':'visible';next.textContent=step===4?'Enviar respuestas ✓':'Continuar →';next.disabled=false;clearError();let s='<div class="step">Pregunta '+String(step+1).padStart(2,'0')+'</div><h2 class="question">'+esc(q.title)+'</h2><p class="description">'+esc(q.hint)+'</p>';
+function render(){let q=Q[step];document.getElementById('stepLabel').textContent='PREGUNTA '+(step+1)+' DE '+Q.length;let pct=Math.round((step+1)/Q.length*100);document.getElementById('percent').textContent=pct+'%';document.getElementById('progressFill').style.width=pct+'%';back.style.visibility=step===0?'hidden':'visible';next.textContent=step===Q.length-1?'Enviar respuestas ✓':'Continuar →';next.disabled=false;clearError();let s='<div class="step">Pregunta '+String(step+1).padStart(2,'0')+'</div><h2 class="question">'+esc(q.title)+'</h2><p class="description">'+esc(q.hint)+'</p>';
  if(q.options){s+='<div class="options'+(q.single?' radio':'')+'" role="group" aria-label="'+esc(q.title)+'">'+q.options.map(o=>{let selected=q.single?data[q.key]===o:data[q.key].includes(o);return '<button type="button" class="option" aria-pressed="'+selected+'" data-key="'+q.key+'" data-option="'+esc(o)+'"><span>'+esc(o)+'</span><span class="tick">✓</span></button>'}).join('')+'</div>';
-   if(q.key==='restricciones'&&data.restricciones.includes('Otra'))s+='<label class="label" for="other">Especificá tu restricción o preferencia</label><input class="field" id="other" maxlength="150" type="text" placeholder="Escribí aquí..." value="'+esc(data.otraRestriccion)+'">';
+   
  }else{s+='<label class="label" for="comment">Tu sugerencia (opcional)</label><textarea id="comment" maxlength="450" placeholder="Ejemplo: me gustaría encontrar más opciones con pollo, pastas o sopas...">'+esc(data.comentario)+'</textarea><div class="chars" id="chars">'+data.comentario.length+' / 450</div>'}
  stage.innerHTML=s;stage.scrollTop=0;stage.style.animation='none';void stage.offsetWidth;stage.style.animation='stepin .24s ease';
  stage.querySelectorAll('.option').forEach(btn=>btn.addEventListener('click',()=>toggle(btn.dataset.key,btn.dataset.option)));
- let other=document.getElementById('other');if(other)other.addEventListener('input',e=>data.otraRestriccion=e.target.value);
+
  let comment=document.getElementById('comment');if(comment)comment.addEventListener('input',e=>{data.comentario=e.target.value;document.getElementById('chars').textContent=data.comentario.length+' / 450'})
 }
-function toggle(key,opt){if(key==='menu'){data.menu=opt}else if(key==='restricciones'){if(opt==='Ninguna'){data.restricciones=['Ninguna'];data.otraRestriccion=''}else{let a=data.restricciones.filter(x=>x!=='Ninguna');data.restricciones=a.includes(opt)?a.filter(x=>x!==opt):[...a,opt];if(!data.restricciones.includes('Otra'))data.otraRestriccion=''}}else{let a=data[key];data[key]=a.includes(opt)?a.filter(x=>x!==opt):[...a,opt]}render()}
-function validate(){if(step===0&&!data.cenas.length)return'Seleccioná al menos un tipo de cena.';if(step===1&&!data.proteinas.length)return'Seleccioná al menos una proteína.';if(step===2&&!data.menu)return'Elegí una opción de menú semanal.';if(step===3){if(!data.restricciones.length)return'Seleccioná una opción de preferencias alimentarias.';if(data.restricciones.includes('Otra')&&!data.otraRestriccion.trim())return'Especificá la restricción que seleccionaste.'}return''}
+function toggle(key,opt){if(key==='menu'){data.menu=opt}else{let a=data[key];data[key]=a.includes(opt)?a.filter(x=>x!==opt):[...a,opt]}render()}
+function validate(){if(step===0&&!data.cenas.length)return'Seleccioná al menos un tipo de cena.';if(step===1&&!data.proteinas.length)return'Seleccioná al menos una proteína.';if(step===2&&!data.menu)return'Elegí una opción de menú semanal.';return''}
 back.addEventListener('click',()=>{if(!sending&&step>0){step--;render()}});
-next.addEventListener('click',()=>{if(sending)return;let bad=validate();if(bad){showError(bad);return}if(step<4){step++;render()}else send()});
+next.addEventListener('click',()=>{if(sending)return;let bad=validate();if(bad){showError(bad);return}if(step<Q.length-1){step++;render()}else send()});
 function clearPolling(){
   clearTimeout(waitingTimer);clearTimeout(statusTimer);clearTimeout(statusTimeout);clearTimeout(noticeTimer);
   if(statusScript){statusScript.remove();statusScript=null;}
