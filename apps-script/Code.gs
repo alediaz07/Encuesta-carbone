@@ -3,6 +3,8 @@
  * Backend completo para Apps Script + Google Sheets.
  * Reemplaza el contenido de Código.gs por este archivo.
  * Conserva el archivo HTML Index existente.
+ * La encuesta pública tiene cuatro preguntas; las columnas históricas G:H siguen vacías.
+ * IMPORTANTE: publicar una nueva versión de la implementación existente.
  * Luego: Implementar > Administrar implementaciones > Editar > Nueva versión.
  */
 const SHEET_ID = '1zAZpOuBLgxnUkVG5J5qhe-1tXCY16xX3eHK-5p0LSOk';
@@ -12,23 +14,15 @@ const OPTIONS = Object.freeze({
   cenas: [
     'Casados tradicionales',
     'Hamburguesas y comida rápida',
-    'Ensaladas completas',
-    'Opciones vegetarianas'
+    'Arroces especiales'
   ],
-  proteinas: [
-    'Pollo', 'Carne de res', 'Cerdo', 'Pescado',
-    'Huevo', 'Legumbres u opciones vegetarianas'
-  ],
+  proteinas: ['Pollo', 'Carne de res', 'Cerdo', 'Pescado'],
   menu: [
     'Un plato diferente todos los días',
     'Comida casera tradicional',
     'Opciones ligeras y saludables',
     'Combinación de comida casera y rápida',
     'Repetir los platos que más me gustan'
-  ],
-  restricciones: [
-    'Ninguna', 'Vegetariana', 'Sin lácteos',
-    'Sin gluten', 'Baja en grasa', 'Otra'
   ]
 });
 
@@ -135,21 +129,9 @@ function saveSurvey(data) {
 
   const cenas = multi('cenas');
   const proteinas = multi('proteinas');
-  const restricciones = multi('restricciones');
-  if (restricciones.includes('Ninguna') && restricciones.length !== 1) {
-    throw new Error('No combinés «Ninguna» con otras restricciones.');
-  }
-
   const menu = String(data.menu || '').trim();
   if (!OPTIONS.menu.includes(menu)) {
     throw new Error('Elegí una opción válida de menú semanal.');
-  }
-
-  const otra = String(data.otraRestriccion || '').trim();
-  if (otra.length > 150 ||
-      (restricciones.includes('Otra') && !otra) ||
-      (!restricciones.includes('Otra') && otra)) {
-    throw new Error('Revisá el detalle de las restricciones.');
   }
 
   const comentario = String(data.comentario || '').trim();
@@ -184,8 +166,8 @@ function saveSurvey(data) {
       safe(cenas.join(', ')),
       safe(proteinas.join(', ')),
       safe(menu),
-      safe(restricciones.join(', ')),
-      safe(otra),
+      '', // Columna histórica: restricciones, ya no se pregunta.
+      '', // Columna histórica: detalle de otra restricción.
       safe(comentario),
       'Encuesta web'
     ]);
