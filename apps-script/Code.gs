@@ -14,7 +14,10 @@ const OPTIONS = Object.freeze({
   cenas: [
     'Casados tradicionales',
     'Hamburguesas y comida rápida',
-    'Arroces especiales'
+    'Arroces especiales',
+    // Compatibilidad temporal con páginas antiguas guardadas en caché.
+    'Ensaladas completas',
+    'Opciones vegetarianas'
   ],
   proteinas: ['Pollo', 'Carne de res', 'Cerdo', 'Pescado'],
   menu: [
@@ -44,6 +47,11 @@ function responseExists_(sheet, submissionId) {
 function doGet(e) {
   if (e && e.parameter && e.parameter.api === 'status') {
     return getStatus_(e);
+  }
+  if (e && e.parameter && e.parameter.api === 'version') {
+    return ContentService
+      .createTextOutput('carbone-4q-2026-11-24-v2')
+      .setMimeType(ContentService.MimeType.TEXT);
   }
   // Mantiene la versión original de la encuesta abierta directamente.
   return HtmlService.createHtmlOutputFromFile('Index')
